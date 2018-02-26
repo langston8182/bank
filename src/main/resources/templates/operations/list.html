@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/main">
+<head>
+<meta charset="ISO-8859-1" />
+<title th:text="#{operations.titre}">Mes operations</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+		<div class="container">
+			<h2 th:text="#{operations.titre}">Mes operations</h2><br />
+			<h4 th:text="#{operations.ajouter.titre}">Ajouter une operation</h4>
+			<form class="form-inline" th:action="@{/operations/ajouter}" th:object="${operation}" method="post">
+				<input type="hidden" th:field="*{id}" />
+				<div class="form-group">
+					<label for="dateOperation" th:text="#{operations.ajouter.jour}">Jour du mois : </label>
+					<input type="text" class="form-control" id="dateOperation" th:text="${jourOperation}"/>
+				</div>
+				<div class="form-group">
+					<label for="intitule" th:text="#{operations.ajouter.intitule}">Intitule : </label>
+					<input type="text" class="form-control" id="intitule" th:field="*{intitule}" />
+				</div>
+				<div class="form-group">
+					<label for="prix" th:text="#{operations.ajouter.prix}">Prix : </label>
+					<input type="text" class="form-control" id="prix" th:field="*{prix}" />
+				</div>
+				<div class="form-group">
+					<label for="typeOperation" th:text="#{operations.ajouter.type}">Type : </label>
+					<select class="form-control" id="typesOperation" th:field="*{typeOperation}">
+						<option th:each="typeOperation : ${typesOperation}" th:value="${typeOperation.id}" th:text="${typeOperation.value}">operations</option>
+					</select>
+				</div>
+				<button type="submit" class="btn btn-warning" th:text="#{operations.ajouter.ajouter_bouton}">Ajouter</button>
+			</form>
+			<br />
+			<h4 th:text="#{operations.report.titre}">Report du mois precedent</h4>
+			<form class="form-inline" th:action="@{/operations/ajoutReport}" th:object="${operationReport}" method="post">
+				<div class="form-group">
+					<label for="prixReport" th:text="#{operations.report.prix}">Prix : </label>
+					<input type="text" class="form-control" id="prixReport" th:field="*{prix}" />
+				</div>
+				<button type="submit" class="btn btn-warning" th:text="#{operations.report.ajouter_bouton}">Ajouter</button>
+			</form>
+			
+			<br />
+			<h4 th:text="#{operations.permanent.titre}">Operations permanentes (cliquez pour ajouter)</h4>
+			<span th:each="permanentOperation : ${permanentsOperation}">
+				<button type="button" class="btn btn-info" th:text="${permanentOperation.intitule}" th:onclick="|window.location.href='@{/operations/ajouterOpPermanente/{idOpPermanente}(idOpPermanente=${permanentOperation.id})}'|"></button>
+			</span>
+			<br />
+			
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th></th>
+						<th th:text="#{operations.tableau.header.date}">Date</th>
+						<th th:text="#{operations.tableau.header.intitule}">Intitule</th>
+						<th th:text="#{operations.tableau.header.prix}">Prix ($)</th>
+						<th th:text="#{operations.tableau.header.type}">Type</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="operation : ${operations}" th:class="${operation.typeOperation.value == 'DEBIT'} ? 'danger' : 'success'">
+						<td>
+							<button type="button" class="btn btn-danger btn-xs" th:onclick="|confirm('#{operations.supprimer.confirmation.titre}', '@{/operations/supprimer/{id}(id=${operation.id})}')|">
+								<span class="glyphicon glyphicon-remove"></span>
+							</button>
+							<button type="button" class="btn btn-warning btn-xs" th:onclick="|window.location.href='@{/operations/modifier/{id}(id=${operation.id})}'|">
+								<span class="glyphicon glyphicon-pencil"></span>
+							</button>
+						</td>
+						<td th:text="${#calendars.format(operation.dateOperation, 'dd/MM/yyyy')}">date</td>
+						<td th:text="${operation.intitule}">intitule</td>
+						<td th:text="${operation.prix}">prix</td>
+						<td th:text="${operation.typeOperation.value}">type</td>
+					</tr>
+					<tr>
+						<td colspan="5" th:text="#{operations.total}">Total : <span th:text="${total}" th:class="${total &lt; 0} ? 'text-danger'">total</span> $</td>
+					</tr>
+				</tbody>
+			</table>
+			<ul class="pagination">
+				<li th:class="${session.month == 1} ? 'active'"><a th:href="@{/operations/list/1}" th:text="#{operations.mois.janvier}">Janvier</a></li>
+				<li th:class="${session.month == 2} ? 'active'"><a th:href="@{/operations/list/2}" th:text="#{operations.mois.fevrier}">Fevrier</a></li>
+				<li th:class="${session.month == 3} ? 'active'"><a th:href="@{/operations/list/3}" th:text="#{operations.mois.mars}">Mars</a></li>
+				<li th:class="${session.month == 4} ? 'active'"><a th:href="@{/operations/list/4}" th:text="#{operations.mois.avril}">Avril</a></li>
+				<li th:class="${session.month == 5} ? 'active'"><a th:href="@{/operations/list/5}" th:text="#{operations.mois.mai}">Mai</a></li>
+				<li th:class="${session.month == 6} ? 'active'"><a th:href="@{/operations/list/6}" th:text="#{operations.mois.juin}">Juin</a></li>
+				<li th:class="${session.month == 7} ? 'active'"><a th:href="@{/operations/list/7}" th:text="#{operations.mois.juillet}">Juillet</a></li>
+				<li th:class="${session.month == 8} ? 'active'"><a th:href="@{/operations/list/8}" th:text="#{operations.mois.aout}">Aout</a></li>
+				<li th:class="${session.month == 9} ? 'active'"><a th:href="@{/operations/list/9}" th:text="#{operations.mois.septembre}">Septembre</a></li>
+				<li th:class="${session.month == 10} ? 'active'"><a th:href="@{/operations/list/10}" th:text="#{operations.mois.octobre}">Octobre</a></li>
+				<li th:class="${session.month == 11} ? 'active'"><a th:href="@{/operations/list/11}" th:text="#{operations.mois.novembre}">Novembre</a></li>
+				<li th:class="${session.month == 12} ? 'active'"><a th:href="@{/operations/list/12}" th:text="#{operations.mois.decembre}">Decembre</a></li>
+			</ul>
+		</div>
+	</div>
+
+</body>
+</html>
