@@ -24,7 +24,7 @@ import com.cmarchive.bank.service.TypeOperationService;
 
 @Controller
 @RequestMapping("/operations")
-@Secured({ "ROLE_USER" })
+@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 @Scope("session")
 public class OperationController {
 

@@ -10,6 +10,7 @@
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" th:src="@{/js/bootbox.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/utils.js}"></script>
+<script type="text/javascript" th:src="@{/js/users.js}"></script>
 <title th:text="#{header.titre}">Gestions des opérations</title>
 </head>
 <body>
@@ -21,14 +22,12 @@
 					<a href="#"><span th:text="#{header.titre}">Gestion des opérations</span></a>
 				</div>
 				<ul class="nav navbar-nav">
-					<li th:class="${controllerName == 'HomeController' ? 'active' : ''}"><a href="#" th:text="#{header.accueil}">Accueil</a></li>
+					<li th:class="${controllerName == 'HomeController' ? 'active' : ''}"><a th:href="@{/}" th:text="#{header.accueil}">Accueil</a></li>
 					<li th:class="${controllerName == 'UserController' ? 'dropdown active' : 'dropdown'}" sec:authorize='hasRole("ROLE_ADMIN")'><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#"><span th:text="#{header.utilisateurs}">Utilisateurs</span> <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" th:text="#{header.utilisateurs.liste}">Liste</a></li>
-							<li><a href="#" th:text="#{header.utilisateurs.ajouter}">Ajouter</a></li>
-							<li><a href="#" th:text="#{header.utilisateurs.supprimer}">Supprimer</a></li>
+							<li><a th:href="@{/users/list}" th:text="#{header.utilisateurs.liste}">Liste</a></li>
 						</ul>
 					</li>
 					<li th:class="${controllerName == 'OperationController' or controllerName == 'PermanentOperationController' ? 'dropdown active' : 'dropdown'}" sec:authorize='hasRole("ROLE_USER")'>
@@ -44,8 +43,7 @@
 						<span th:text="#{header.bonjour}">Bonjour </span> <b sec:authentication="name">Guest</b> |
 						<a th:href="@{/logout}" th:text="#{header.deconnexion}" style="padding-right: 20px;">logout</a> <a th:href="@{?lang=fr}">fr</a> / <a th:href="@{?lang=en}">en</a>
 					</p>
-					<a sec:authorize="!isAuthenticated()" data-toggle="modal"
-						data-target="#loginModal" role="button" th:text="#{header.connexion}" style="padding-right: 20px;">Login</a> 
+					<a sec:authorize="!isAuthenticated()" th:href="@{/login}" th:text="#{header.connexion}" style="padding-right: 20px;">Login</a> 
 					<span sec:authorize="!isAuthenticated()"><a th:href="@{?lang=fr}">fr</a> / <a th:href="@{?lang=en}">en</a></span>
 				</div>
 			</div>
@@ -93,6 +91,9 @@
 
 		<div layout:fragment="content"></div>
 
+		<footer style="left: 0; right: 0; bottom: 0; text-align: center;width: 100%;">
+			<p><span class="glyphicon glyphicon-copyright-mark"></span> Cyril Marchive 2018</p>
+		</footer>
 	</div>
 </body>
 </html>

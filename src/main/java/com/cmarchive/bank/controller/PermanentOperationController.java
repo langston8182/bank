@@ -17,7 +17,7 @@ import com.cmarchive.bank.service.TypeOperationService;
 
 @Controller
 @RequestMapping("/permanentsOperation")
-@Secured({"ROLE_USER"})
+@Secured({"ROLE_USER", "ROLE_ADMIN"})
 public class PermanentOperationController {
 
 	private PermanentOperationService permanentOperationService;

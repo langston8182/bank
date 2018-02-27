@@ -1,5 +1,6 @@
 package com.cmarchive.bank.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User {
@@ -26,10 +29,16 @@ public class User {
 	private String password;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Operation> operations;
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<PermanentOperation> permanentsOperation;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Role> roles;
+	@JsonIgnore
+	private List<Role> roles = new ArrayList<>();
 
 	public User() {
 		super();

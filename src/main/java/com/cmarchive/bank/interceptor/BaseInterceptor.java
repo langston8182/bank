@@ -32,7 +32,7 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 		String controllerName = "";
 		String actionName = "";
 		
-		if (handler instanceof HandlerMethod) {
+		if (handler instanceof HandlerMethod && modelAndView != null) {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			controllerName = handlerMethod.getBeanType().getSimpleName();
 			actionName = handlerMethod.getMethod().getName();

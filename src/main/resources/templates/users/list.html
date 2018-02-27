@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/main">
+<head>
+<meta charset="ISO-8859-1" />
+<title th:text="#{users.titre}">Mes operations</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+		
+		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modifierModal" id="open-ajouterModal" th:text="#{users.bouton.ajouter}">Ajouter</button>
+		<br /><br />
+		
+		<div class="panel-group">
+			<div class="panel panel-default" th:each="user : ${users}">
+				<div class="panel-heading"><a th:text="|${user.prenom} ${user.nom}|" data-toggle="collapse" th:href="|#${user.id}|">Nom prenom</a></div>
+				<div class="panel-body collapse" th:id="${user.id}">
+					<div class="row">
+						<div class="col-sm-3">
+							<b th:text="#{users.nom}">Nom : </b>
+						</div>
+						<div class="col-sm-9"><span th:text="${user.nom}">Nom</span></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+							<b th:text="#{users.prenom}">Prenom : </b>
+						</div>
+						<div class="col-sm-9"><span th:text="${user.prenom}">Prenom</span></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+							<b th:text="#{users.email}">Email : </b>
+						</div>
+						<div class="col-sm-9"><span th:text="${user.email}">Email</span></div>
+					</div>
+					<button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modifierModal" data-id="" th:attr="data-id=${user.id}" id="open-modifierModal" th:text="#{users.bouton.modifier}">Modifier</button>
+					<button type="button" class="btn btn-danger btn-xs" th:onclick="|confirm('#{users.confirmation.supprimer.titre}', '@{/users/supprimer/{id}(id=${user.id})}')|" th:text="#{users.bouton.supprimer}">Supprimer</button>
+				</div>
+			</div>
+		</div>
+		
+		<div id="modifierModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title" th:text="#{users.popup.titre}">Ajout / modification utilisateur</h4>
+					</div>
+					<div class="modal-body">
+						<form th:action="@{/users/modifier}" th:object="${user}" method="post">
+							<input type="hidden" id="userId" th:field="*{id}" />
+							<div class="form-group">
+								<label for="nom" th:text="#{users.popup.nom}">Nom : </label>
+								<input type="text" class="form-control" id="nom" th:field="*{nom}" />
+							</div>
+							<div class="form-group">
+								<label for="prenom" th:text="#{users.popup.prenom}">Prenom : </label>
+								<input type="text" class="form-control" id="prenom" th:field="*{prenom}" />
+							</div>
+							<div class="form-group">
+								<label for="email" th:text="#{users.popup.email}">Email : </label>
+								<input type="email" class="form-control" id="email" th:field="*{email}" />
+							</div>
+							<div class="form-group" id="groupPassword">
+								<label for="password" th:text="#{users.popup.password}">Mot de passe : </label>
+								<input type="password" class="form-control" id="password" th:field="*{password}" />
+							</div>
+							<button type="submit" class="btn btn-info" th:text="#{users.popup.bouton.valider}">Valider</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+</body>
+</html>
