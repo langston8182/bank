@@ -10,6 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,6 +25,8 @@ public class User {
 	@GeneratedValue
 	private Long id;
 	
+	@NotNull
+	@NotEmpty
 	private String nom;
 	
 	private String prenom;
@@ -29,8 +36,9 @@ public class User {
 	private String password;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonIgnore
-	private List<Operation> operations;
+	private List<Operation> operations = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore

@@ -15,11 +15,12 @@
 				<input type="hidden" th:field="*{id}" />
 				<div class="form-group">
 					<label for="dateOperation" th:text="#{operations.ajouter.jour}">Jour du mois : </label>
-					<input type="text" class="form-control" id="dateOperation" th:text="${jourOperation}"/>
+					<input type="text" class="form-control" id="jourOperation" name="jourOperation" style="text-align: right" th:value="${jourOperation}"/>
 				</div>
 				<div class="form-group">
-					<label for="intitule" th:text="#{operations.ajouter.intitule}">Intitule : </label>
+					<label for="intitule" th:text="#{operations.ajouter.intitule}">Intitule : <span class="required">*</span></label>
 					<input type="text" class="form-control" id="intitule" th:field="*{intitule}" />
+					<span th:if="${#fields.hasErrors('intitule')}" th:errors="*{intitule}" th:class="help-block">Intitule erreur</span>
 				</div>
 				<div class="form-group">
 					<label for="prix" th:text="#{operations.ajouter.prix}">Prix : </label>
@@ -70,13 +71,13 @@
 								<span class="glyphicon glyphicon-pencil"></span>
 							</button>
 						</td>
-						<td th:text="${#calendars.format(operation.dateOperation, 'dd/MM/yyyy')}">date</td>
+						<td th:text="${operation.dateOperation}">date</td>
 						<td th:text="${operation.intitule}">intitule</td>
 						<td th:text="${operation.prix}">prix</td>
 						<td th:text="${operation.typeOperation.value}">type</td>
 					</tr>
 					<tr>
-						<td colspan="5" th:text="#{operations.total}">Total : <span th:text="${total}" th:class="${total &lt; 0} ? 'text-danger'">total</span> $</td>
+						<td colspan="5"><span th:text="#{operations.total}">Total</span> : <span th:text="${total}" th:class="${total &lt; 0} ? 'text-danger'">total</span> $</td>
 					</tr>
 				</tbody>
 			</table>

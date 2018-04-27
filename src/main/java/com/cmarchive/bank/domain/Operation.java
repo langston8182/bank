@@ -1,16 +1,17 @@
 package com.cmarchive.bank.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class Operation {
@@ -19,13 +20,14 @@ public class Operation {
 	@GeneratedValue
 	private Long id;
 	
+	@NotNull
+	@NotEmpty
 	private String intitule;
+
+	@Column
+	private LocalDate dateOperation;
 	
-	@CreatedDate
-	@Column(columnDefinition = "TIMESTAMP")
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date dateOperation;
-	
+	@NotNull
 	private float prix;
 	
 	@ManyToOne
@@ -34,7 +36,7 @@ public class Operation {
 	@ManyToOne
 	private User user;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "permanent_operation_id")
 	private PermanentOperation permanentOperation;
 
@@ -58,11 +60,11 @@ public class Operation {
 		this.intitule = intitule;
 	}
 
-	public Date getDateOperation() {
+	public LocalDate getDateOperation() {
 		return dateOperation;
 	}
 
-	public void setDateOperation(Date dateOperation) {
+	public void setDateOperation(LocalDate dateOperation) {
 		this.dateOperation = dateOperation;
 	}
 

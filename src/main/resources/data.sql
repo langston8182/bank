@@ -11,11 +11,6 @@ insert into user_roles(user_id, roles_id) values(1, 2);
 insert into user_roles(user_id, roles_id) values(1, 1);
 insert into user_roles(user_id, roles_id) values(2, 2);
 
-insert into operation(id, intitule, date_operation, prix, type_operation_id, user_id) values(1, 'Restaurant', CURRENT_DATE(), 60, 2, 1);
-insert into operation(id, intitule, date_operation, prix, type_operation_id, user_id) values(2, 'Sortie', CURRENT_DATE(), 120, 2, 1);
-insert into operation(id, intitule, date_operation, prix, type_operation_id, user_id) values(3, 'Virement', CURRENT_DATE(), 1000, 1, 2);
-insert into operation(id, intitule, date_operation, prix, type_operation_id, user_id) values(4, 'Metro', CURRENT_DATE(), 86, 2, 2);
-
 insert into permanent_operation(id,  intitule, jour, prix, type_operation_id, user_id) values(1, 'HydroQuebec', 2, 100, 2, 1);
 insert into permanent_operation(id,  intitule, jour, prix, type_operation_id, user_id) values(2, 'Virgin Modile', 10, 49, 2, 1);
 insert into permanent_operation(id,  intitule, jour, prix, type_operation_id, user_id) values(3, 'Salaire', 1, 1000, 1, 1);

@@ -1,16 +1,20 @@
 package com.cmarchive.bank.controller;
 
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -59,23 +63,28 @@ public class OperationController {
 	}
 
 	@RequestMapping(value = "/ajouter", method = RequestMethod.POST)
-	public String ajouter(Operation operation, Model model, HttpServletRequest request) {
-		operation.setUser(loggedUser.getUser());
-		int jourOperation = request.getParameter("jourOperation") != null ? Integer.parseInt(request.getParameter("jourOperation")) : 1;
-		
-		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-		if (request.getSession().getAttribute("month") != null) {
-			month = (Integer) request.getSession().getAttribute("month");
-		}
-		Calendar calendar = Calendar.getInstance();
-		calendar.clear();
-		calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
-		calendar.set(Calendar.MONTH, month + 1);
-		calendar.set(Calendar.DAY_OF_MONTH, jourOperation);
-		
-		operationService.save(operation);
+	public String ajouter(@Valid Operation operation, BindingResult bindingResult, Model model, HttpServletRequest request) {
+		if (bindingResult.hasErrors()) {
+			fillModelForList(model, request);
+			return "operations/list";
+		} else {
 
-		return "redirect:/operations/list";
+			operation.setUser(loggedUser.getUser());
+			int jourOperation = request.getParameter("jourOperation") != null ? Integer.parseInt(request.getParameter("jourOperation")) : 1;
+
+			int month = LocalDate.now().getMonthValue();
+			if (request.getSession().getAttribute("month") != null) {
+				month = (Integer) request.getSession().getAttribute("month");
+			}
+			
+			LocalDate localDate = LocalDate.of(Year.now().getValue(), month, jourOperation);
+
+			operation.setDateOperation(localDate);
+
+			operationService.save(operation);
+
+			return "redirect:/operations/list";
+		}
 	}
 
 	@RequestMapping(value = "/ajoutReport", method = RequestMethod.POST)
@@ -88,11 +97,10 @@ public class OperationController {
 		}
 		operation.setPrix(Math.abs(operation.getPrix()));
 		operation.setIntitule("Report");
-		Calendar calendar = Calendar.getInstance();
-		calendar.clear();
-		calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
-		calendar.set(Calendar.MONTH, (int) request.getSession().getAttribute("month") - 1);
-		operation.setDateOperation(calendar.getTime());
+		
+		LocalDate localDate = LocalDate.of(Year.now().getValue(), (int) request.getSession().getAttribute("month"), 1);
+
+		operation.setDateOperation(localDate);
 		operationService.save(operation);
 		
 		return "redirect:/operations/list";
@@ -125,7 +133,7 @@ public class OperationController {
 	}
 
 	private void fillModelForList(Model model, HttpServletRequest request) {
-		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+		int month = LocalDate.now().getMonthValue();
 		if (request.getSession().getAttribute("month") != null) {
 			month = (Integer) request.getSession().getAttribute("month");
 		}
@@ -137,6 +145,7 @@ public class OperationController {
 		model.addAttribute("operation", new Operation());
 		model.addAttribute("total", total(operations));
 		model.addAttribute("permanentsOperation", permanentsOperation);
+		model.addAttribute("jourOperation", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 
 		// report d'operation du mois precedent
 		float totalReport = total(operationService.findByMonth(this.loggedUser.getUser().getId(), month - 1));
@@ -145,30 +154,30 @@ public class OperationController {
 		model.addAttribute("operationReport", operationReport);
 		
 		// liste des operations pernanentes a exclure
-		Iterator<PermanentOperation> iterator = permanentsOperation.iterator();
-
-		while (iterator.hasNext()) {
-			PermanentOperation permanentOperation = iterator.next();
-			for (Operation operation : operations) {
-				if (operation.getPermanentOperation() != null
-						&& (operation.getPermanentOperation().getId() == permanentOperation.getId())) {
-					iterator.remove();
-					break;
-				}
-			}
-		}
+		List<PermanentOperation> permanentOperationsToDelebe = permanentsOperation.stream()
+		    .filter(p -> operations.stream()
+		            .filter(o -> o.getPermanentOperation() != null)
+		            .anyMatch(o -> o.getPermanentOperation().getId().equals(p.getId())))
+		    .collect(Collectors.toList());
+		
+		permanentsOperation.removeAll(permanentOperationsToDelebe);
 	}
 
 	private float total(List<Operation> operations) {
-		float total = 0;
-		for (Operation operation : operations) {
-			if (operation.getTypeOperation().getValue().equals("DEBIT")) {
-				total -= operation.getPrix();
-			} else {
-				total += operation.getPrix();
-			}
-		}
-
+		
+	    float total = 0;
+	    
+		double totalCredit = operations.stream()
+		        .filter(o -> o.getTypeOperation().getValue().equals("CREDIT"))
+		        .mapToDouble(o -> o.getPrix())
+		        .sum();
+		
+		double totalDebit = operations.stream()
+                .filter(o -> o.getTypeOperation().getValue().equals("DEBIT"))
+                .mapToDouble(o -> o.getPrix())
+                .sum();
+		
+		total = (float) (totalCredit - totalDebit);
 		return total;
 	}
 }

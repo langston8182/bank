@@ -1,10 +1,13 @@
 package com.cmarchive.bank.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,18 +43,22 @@ public class UserController {
 	}
 
 	@RequestMapping("/modifier")
-	public String modifier(User user) {
-		User userBefore = null;
-		if (user.getId() != null) {
-			userBefore = userService.get(user.getId());
-			user.setPassword(userBefore.getPassword());
+	public String modifier(@Valid User user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "users/list";
 		} else {
-			userService.encodePassword(user);
-			userService.setUserRole(user);
-		}
-		userService.save(user);
+			User userBefore = null;
+			if (user.getId() != null) {
+				userBefore = userService.get(user.getId());
+				user.setPassword(userBefore.getPassword());
+			} else {
+				userService.encodePassword(user);
+				userService.setUserRole(user);
+			}
+			userService.save(user);
 
-		return "redirect:/users/list";
+			return "redirect:/users/list";
+		}
 	}
 	
 	@RequestMapping("/supprimer/{id}")

@@ -13,15 +13,15 @@ public class Role {
 
 	@Id
 	@GeneratedValue
-	public String id;
+	public Long id;
 	
 	private String role;
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
