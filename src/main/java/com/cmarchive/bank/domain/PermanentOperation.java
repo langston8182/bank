@@ -8,6 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import lombok.Data;
+
+@Data
 @Entity
 public class PermanentOperation {
 
@@ -32,62 +38,7 @@ public class PermanentOperation {
 	private User user;
 
 	@OneToMany(mappedBy = "permanentOperation")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Operation> operations;
-	
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getIntitule() {
-		return intitule;
-	}
-
-	public void setIntitule(String intitule) {
-		this.intitule = intitule;
-	}
-
-	public int getJour() {
-		return jour;
-	}
-
-	public void setJour(int jour) {
-		this.jour = jour;
-	}
-
-	public float getPrix() {
-		return prix;
-	}
-
-	public void setPrix(float prix) {
-		this.prix = prix;
-	}
-
-	public TypeOperation getTypeOperation() {
-		return typeOperation;
-	}
-
-	public void setTypeOperation(TypeOperation typeOperation) {
-		this.typeOperation = typeOperation;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public List<Operation> getOperations() {
-		return operations;
-	}
-
-	public void setOperations(List<Operation> operations) {
-		this.operations = operations;
-	}
-	
 }

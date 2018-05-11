@@ -3,7 +3,9 @@ package com.cmarchive.bank.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Year;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 import org.junit.Test;
@@ -31,7 +33,6 @@ public class OperationServiceTest {
     private OperationService operationService;
     private UserService userService;
     private TypeOperationService typeOperationService;
-    private PermanentOperationService permanentOperationService;
 
     @Autowired
     public void setOperationService(OperationService operationService) {
@@ -46,11 +47,6 @@ public class OperationServiceTest {
     @Autowired
     public void setTypeOperationService(TypeOperationService typeOperationService) {
         this.typeOperationService = typeOperationService;
-    }
-
-    @Autowired
-    public void setPermanentOperationService(PermanentOperationService permanentOperationService) {
-        this.permanentOperationService = permanentOperationService;
     }
 
     @Test
@@ -90,7 +86,9 @@ public class OperationServiceTest {
     
     @Test(expected = OperationNotFoundException.class)
     public void delete() {
-        Operation operation = OperationExample.aOperation().get();
+        User user = userService.get(1L);
+        Operation operation = OperationExample.aOperation()
+                .with(o -> o.setUser(user)).get();
         assertThat(operation.getId()).isNull();
         
         Operation savedOperation = operationService.save(operation);
@@ -146,7 +144,31 @@ public class OperationServiceTest {
         assertThat(expectedOperation.getTypeOperation().getValue()).isEqualTo(permanentOperation.getTypeOperation().getValue());
     }
     
+    @Test
     public void findByMonth() {
+        long userId = 1L;
+        User user = userService.get(userId);
+        int month = Month.NOVEMBER.getValue();
         
+        List<Operation> expectedOperations = operationService.findByMonth(userId, month);
+        assertThat(expectedOperations).isEmpty();
+        
+        LocalDate localDateOp1 = LocalDate.now().withMonth(month).with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate localDateOp2 = localDateOp1.plusDays(1);
+        LocalDate localDateOp3 = localDateOp1.plusMonths(1);
+        
+        Operation operation1 = OperationExample.aOperation().with(o -> o.setDateOperation(localDateOp1))
+                .with(o -> o.setUser(user)).get();
+        Operation operation2 = OperationExample.aOperation().with(o -> o.setDateOperation(localDateOp2))
+                .with(o -> o.setUser(user)).get();
+        Operation operation3 = OperationExample.aOperation().with(o -> o.setDateOperation(localDateOp3))
+                .with(o -> o.setUser(user)).get();
+        
+        operationService.save(operation1);
+        operationService.save(operation2);
+        operationService.save(operation3);
+        
+        expectedOperations = operationService.findByMonth(userId, month);
+        assertThat(expectedOperations).hasSize(2);
     }
 }

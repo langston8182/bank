@@ -3,8 +3,10 @@ package com.cmarchive.bank.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.cmarchive.bank.domain.PermanentOperation;
+import com.cmarchive.bank.exceptions.PermanentOperationNotFoundException;
 import com.cmarchive.bank.repository.PermanentOperationRepository;
 import com.cmarchive.bank.service.PermanentOperationService;
 
@@ -20,7 +22,14 @@ public class PermanentOperationServiceImpl implements PermanentOperationService 
     
     @Override
     public PermanentOperation get(Long id) {
-        return permanentOperationRepository.findOne(id);
+        Assert.notNull(id, "Id cannot be null");
+        PermanentOperation permanentOperation = permanentOperationRepository.findOne(id);
+        
+        if (permanentOperation == null) {
+            throw new PermanentOperationNotFoundException("PermanentOperation with id " + id + " not found.");
+        }
+        
+        return permanentOperation;
     }
     
     @Override
