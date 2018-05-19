@@ -19,9 +19,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
+@EqualsAndHashCode(of = {"id"})
 public class User {
 
 	@Id
@@ -38,14 +40,15 @@ public class User {
 	
 	private String password;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonIgnore
 	private List<Operation> operations = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonIgnore
-	private List<PermanentOperation> permanentsOperation;
+	private List<PermanentOperation> permanentsOperation = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonIgnore

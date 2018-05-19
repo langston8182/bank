@@ -42,6 +42,7 @@ public class PermanentOperationController {
 	
 	@RequestMapping(value = "/ajouter", method = RequestMethod.POST)
 	public String ajouter(PermanentOperation permanentOperation, Model model) {
+		permanentOperation.setUser(this.loggedUser.getUser());
 		permanentOperationService.save(permanentOperation);
 		
 		return "redirect:/permanentsOperation/list";

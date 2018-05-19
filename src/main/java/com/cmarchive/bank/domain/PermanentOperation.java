@@ -1,5 +1,6 @@
 package com.cmarchive.bank.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,9 +13,11 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
+@EqualsAndHashCode(of = {"id"})
 public class PermanentOperation {
 
 	public PermanentOperation() {
@@ -39,6 +42,6 @@ public class PermanentOperation {
 
 	@OneToMany(mappedBy = "permanentOperation")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<Operation> operations;
+	private List<Operation> operations = new ArrayList<>();
 
 }

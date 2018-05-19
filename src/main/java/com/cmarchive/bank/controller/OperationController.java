@@ -148,7 +148,7 @@ public class OperationController {
 		model.addAttribute("jourOperation", Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 
 		// report d'operation du mois precedent
-		float totalReport = total(operationService.findByMonth(this.loggedUser.getUser().getId(), month - 1));
+		float totalReport = total(operationService.findByMonth(this.loggedUser.getUser().getId(), month == 1 ? month : month - 1));
 		Operation operationReport = new Operation();
 		operationReport.setPrix(totalReport);
 		model.addAttribute("operationReport", operationReport);

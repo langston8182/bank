@@ -33,6 +33,7 @@ public class OperationServiceTest {
     private OperationService operationService;
     private UserService userService;
     private TypeOperationService typeOperationService;
+    private PermanentOperationService permanentOperationService;
 
     @Autowired
     public void setOperationService(OperationService operationService) {
@@ -49,7 +50,12 @@ public class OperationServiceTest {
         this.typeOperationService = typeOperationService;
     }
 
-    @Test
+    @Autowired
+    public void setPermanentOperationService(PermanentOperationService permanentOperationService) {
+		this.permanentOperationService = permanentOperationService;
+	}
+
+	@Test
     public void list() {
         Operation operation = OperationExample.aOperation().get();
         operationService.save(operation);
@@ -86,9 +92,13 @@ public class OperationServiceTest {
     
     @Test(expected = OperationNotFoundException.class)
     public void delete() {
-        User user = userService.get(1L);
+        Long userId = 1L;
+        Long permanentOperationId = 1L;
+        
+    	User user = userService.get(userId);
         Operation operation = OperationExample.aOperation()
-                .with(o -> o.setUser(user)).get();
+                .with(o -> o.setUser(user))
+                .with(o -> o.setPermanentOperation(permanentOperationService.get(permanentOperationId))).get();
         assertThat(operation.getId()).isNull();
         
         Operation savedOperation = operationService.save(operation);
@@ -100,6 +110,10 @@ public class OperationServiceTest {
         assertThat(expectedOperation.getPrix()).isEqualByComparingTo(savedOperation.getPrix());
         
         operationService.delete(savedOperation.getId());
+        
+        PermanentOperation expectedPermanentOperation = permanentOperationService.get(permanentOperationId);
+        assertThat(expectedPermanentOperation).isNotNull();
+        
         operationService.get(savedOperation.getId());
     }
     
@@ -129,6 +143,7 @@ public class OperationServiceTest {
         PermanentOperation permanentOperation = PermanentOperationExample.aPermanentOperation().get();
         permanentOperation.setUser(user);
         permanentOperation.setTypeOperation(typeOperationService.getCredit());
+        permanentOperationService.save(permanentOperation);
 
         operationService.addOpPermanenteToOperations(1, permanentOperation);
         

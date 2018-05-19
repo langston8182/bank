@@ -1,5 +1,7 @@
 package com.cmarchive.bank.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ public class TypeOperationServiceImpl implements TypeOperationService {
     }
     
     @Override
-    public Iterable<TypeOperation> list() {
+    public List<TypeOperation> list() {
         return typeOperationRepository.findAll();
     }
     

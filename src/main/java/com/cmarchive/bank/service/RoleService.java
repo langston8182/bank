@@ -6,4 +6,6 @@ public interface RoleService {
 
 	public Role get(String role);
 	
+	public Role findByRole(String role);
+	
 }

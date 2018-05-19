@@ -8,24 +8,26 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.cmarchive.bank.component.MyUserDetails;
 import com.cmarchive.bank.domain.User;
-import com.cmarchive.bank.repository.RoleRepository;
+import com.cmarchive.bank.exceptions.UserNotFoundException;
 import com.cmarchive.bank.repository.UserRepository;
+import com.cmarchive.bank.service.RoleService;
 import com.cmarchive.bank.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
 
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
         super();
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
     }
     
     @Override
@@ -45,7 +47,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     
     @Override
     public User get(Long id) {
-        return userRepository.findOne(id);
+    	Assert.notNull(id, "Id cannot be null");
+    	
+    	User user = userRepository.findOne(id);
+    	
+    	if (user == null) {
+            throw new UserNotFoundException("User with id " + id + " not found.");
+        }
+        
+        return user;
     }
     
     @Override
@@ -71,7 +81,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public void setUserRole(User user) {
-        user.getRoles().add(roleRepository.findByRole("ROLE_USER"));
+        user.getRoles().add(roleService.findByRole("ROLE_USER"));
     }
     
 }

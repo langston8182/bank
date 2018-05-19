@@ -41,7 +41,7 @@ public class Operation {
 	@ManyToOne
 	private User user;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "permanent_operation_id")
 	private PermanentOperation permanentOperation;
 

@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@EqualsAndHashCode
+@EqualsAndHashCode(of = {"id"})
 public class Role {
 
 	public Role() {
