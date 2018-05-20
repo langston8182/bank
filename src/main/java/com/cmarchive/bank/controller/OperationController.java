@@ -168,12 +168,12 @@ public class OperationController {
 	    float total = 0;
 	    
 		double totalCredit = operations.stream()
-		        .filter(o -> o.getTypeOperation().getValue().equals("CREDIT"))
+		        .filter(o -> o.getTypeOperation().getValueType().equals("CREDIT"))
 		        .mapToDouble(o -> o.getPrix())
 		        .sum();
 		
 		double totalDebit = operations.stream()
-                .filter(o -> o.getTypeOperation().getValue().equals("DEBIT"))
+                .filter(o -> o.getTypeOperation().getValueType().equals("DEBIT"))
                 .mapToDouble(o -> o.getPrix())
                 .sum();
 		

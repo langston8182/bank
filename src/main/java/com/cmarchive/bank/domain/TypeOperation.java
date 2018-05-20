@@ -19,13 +19,4 @@ public class TypeOperation {
 	public TypeOperation() {
 		super();
 	}
-
-	public String getValue() {
-		return valueType;
-	}
-
-	public void setValue(String value) {
-		this.valueType = value;
-	}
-	
 }

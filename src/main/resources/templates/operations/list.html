@@ -29,7 +29,7 @@
 				<div class="form-group">
 					<label for="typeOperation" th:text="#{operations.ajouter.type}">Type : </label>
 					<select class="form-control" id="typesOperation" th:field="*{typeOperation}">
-						<option th:each="typeOperation : ${typesOperation}" th:value="${typeOperation.id}" th:text="${typeOperation.value}">operations</option>
+						<option th:each="typeOperation : ${typesOperation}" th:value="${typeOperation.id}" th:text="${typeOperation.valueType}">operations</option>
 					</select>
 				</div>
 				<button type="submit" class="btn btn-warning" th:text="#{operations.ajouter.ajouter_bouton}">Ajouter</button>

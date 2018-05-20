@@ -156,7 +156,7 @@ public class OperationServiceTest {
         assertThat(expectedOperation.getIntitule()).isEqualTo(permanentOperation.getIntitule());
         assertThat(expectedOperation.getDateOperation()).isEqualByComparingTo(localDate);
         assertThat(expectedOperation.getPrix()).isEqualByComparingTo(permanentOperation.getPrix());
-        assertThat(expectedOperation.getTypeOperation().getValue()).isEqualTo(permanentOperation.getTypeOperation().getValue());
+        assertThat(expectedOperation.getTypeOperation().getValueType()).isEqualTo(permanentOperation.getTypeOperation().getValueType());
     }
     
     @Test
