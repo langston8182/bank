@@ -3,6 +3,8 @@ package com.cmarchive.bank.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cmarchive.bank.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.method.HandlerMethod;
@@ -13,6 +15,13 @@ import com.cmarchive.bank.component.MyUserDetails;
 import com.cmarchive.bank.domain.User;
 
 public class BaseInterceptor extends HandlerInterceptorAdapter {
+
+	private TokenService tokenService;
+
+	@Autowired
+	public BaseInterceptor(TokenService tokenService) {
+		this.tokenService = tokenService;
+	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

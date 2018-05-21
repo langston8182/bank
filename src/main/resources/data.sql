@@ -3,6 +3,7 @@ delete from user_roles;
 delete from role;
 delete from operation;
 delete from type_operation;
+delete from authentication_token;
 delete from user;
 
 insert into user(id, nom, prenom, email, password) values(1, 'Marchive', 'Cyril', 'cyril.marchive@gmail.com', '$2a$10$l59QxhDRG.2ExXNgCBOM7OkAdsjDspYyNiiEUE5uNyyP1Mdykmyo2');
