@@ -2,6 +2,8 @@ package com.cmarchive.bank.config;
 
 import com.cmarchive.bank.component.MyAuthenticationSuccessHandler;
 import com.cmarchive.bank.component.MyLogoutSuccessHandler;
+import com.cmarchive.bank.security.AuthenticationFilter;
+import com.cmarchive.bank.security.LoginFilter;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +17,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -27,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailService;
     private MyAuthenticationSuccessHandler authenticationHandler;
     private MyLogoutSuccessHandler logoutHandler;
-    private AuthenticationTokenFilter authenticationTokenFilter;
+    //private AuthenticationTokenFilter authenticationTokenFilter;
 
     @Value("${security.allow.origin}")
     private String securityAllowedHosts;
@@ -54,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetailService = userDetailService;
         this.authenticationHandler = authenticationHandler;
         this.logoutHandler = logoutHandler;
-        this.authenticationTokenFilter = authenticationTokenFilter;
+        //this.authenticationTokenFilter = authenticationTokenFilter;
     }
 
     @Autowired
@@ -68,15 +72,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(authProvider())
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/login")
+                .permitAll()
                 .antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers("/").permitAll()
                 .anyRequest().hasRole("USER")
-
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .successHandler(authenticationHandler)
-                .permitAll()
 
                 .and()
                 .logout()
@@ -84,7 +84,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutHandler)
 
                 .and()
-                .addFilterBefore(new AuthenticationTokenFilter(super.authenticationManager()), BasicAuthenticationFilter.class)
+                //.addFilterBefore(new AuthenticationTokenFilter(super.authenticationManager()), BasicAuthenticationFilter.class)
+                .addFilterBefore(new LoginFilter(super.authenticationManager(), new AntPathRequestMatcher("/login")), BasicAuthenticationFilter.class)
+                .addFilterBefore(new AuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling();
     }
 

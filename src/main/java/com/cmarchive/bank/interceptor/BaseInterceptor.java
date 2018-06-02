@@ -18,6 +18,10 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 
 	private TokenService tokenService;
 
+	public BaseInterceptor() {
+
+	}
+
 	@Autowired
 	public BaseInterceptor(TokenService tokenService) {
 		this.tokenService = tokenService;
