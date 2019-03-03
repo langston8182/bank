@@ -9,7 +9,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.cmarchive.bank.component.MyUserDetails;
 import com.cmarchive.bank.domain.User;
 
 public class BaseInterceptor extends HandlerInterceptorAdapter {
@@ -19,8 +18,8 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		if (authentication != null && authentication.getPrincipal() instanceof MyUserDetails) {
-			User user = ((MyUserDetails) authentication.getPrincipal()).getUser();
+		if (authentication != null && authentication.getPrincipal() instanceof User) {
+			User user = (User) authentication.getPrincipal();
 			request.getSession().setAttribute("loggedUser", user);
 		}
 		return super.preHandle(request, response, handler);
@@ -31,12 +30,12 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 			ModelAndView modelAndView) throws Exception {
 		String controllerName = "";
 		String actionName = "";
-		
+
 		if (handler instanceof HandlerMethod && modelAndView != null) {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			controllerName = handlerMethod.getBeanType().getSimpleName();
 			actionName = handlerMethod.getMethod().getName();
-			
+
 			modelAndView.addObject("controllerName", controllerName);
 			modelAndView.addObject("actionName", actionName);
 		}

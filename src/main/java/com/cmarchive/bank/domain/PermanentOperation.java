@@ -44,4 +44,59 @@ public class PermanentOperation {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Operation> operations = new ArrayList<>();
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getIntitule() {
+		return intitule;
+	}
+
+	public void setIntitule(String intitule) {
+		this.intitule = intitule;
+	}
+
+	public int getJour() {
+		return jour;
+	}
+
+	public void setJour(int jour) {
+		this.jour = jour;
+	}
+
+	public float getPrix() {
+		return prix;
+	}
+
+	public void setPrix(float prix) {
+		this.prix = prix;
+	}
+
+	public TypeOperation getTypeOperation() {
+		return typeOperation;
+	}
+
+	public void setTypeOperation(TypeOperation typeOperation) {
+		this.typeOperation = typeOperation;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<Operation> getOperations() {
+		return operations;
+	}
+
+	public void setOperations(List<Operation> operations) {
+		this.operations = operations;
+	}
 }

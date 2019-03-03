@@ -48,4 +48,60 @@ public class Operation {
 	public Operation() {
 		super();
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getIntitule() {
+		return intitule;
+	}
+
+	public void setIntitule(String intitule) {
+		this.intitule = intitule;
+	}
+
+	public LocalDate getDateOperation() {
+		return dateOperation;
+	}
+
+	public void setDateOperation(LocalDate dateOperation) {
+		this.dateOperation = dateOperation;
+	}
+
+	public float getPrix() {
+		return prix;
+	}
+
+	public void setPrix(float prix) {
+		this.prix = prix;
+	}
+
+	public TypeOperation getTypeOperation() {
+		return typeOperation;
+	}
+
+	public void setTypeOperation(TypeOperation typeOperation) {
+		this.typeOperation = typeOperation;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public PermanentOperation getPermanentOperation() {
+		return permanentOperation;
+	}
+
+	public void setPermanentOperation(PermanentOperation permanentOperation) {
+		this.permanentOperation = permanentOperation;
+	}
 }

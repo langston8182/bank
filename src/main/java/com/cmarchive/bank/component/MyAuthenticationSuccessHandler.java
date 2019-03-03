@@ -26,8 +26,8 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth)
 			throws IOException, ServletException {
-		if (auth.getPrincipal() instanceof MyUserDetails) {
-			User user = ((MyUserDetails) auth.getPrincipal()).getUser();
+		if (auth.getPrincipal() instanceof User) {
+			User user = (User) auth.getPrincipal();
 			loggedUser().setUser(user);
 
 			response.sendRedirect("/operations/list");

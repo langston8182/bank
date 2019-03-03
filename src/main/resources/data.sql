@@ -5,8 +5,8 @@ delete from operation;
 delete from type_operation;
 delete from user;
 
-insert into user(id, nom, prenom, email, password) values(1, 'Marchive', 'Cyril', 'cyril.marchive@gmail.com', '$2a$10$l59QxhDRG.2ExXNgCBOM7OkAdsjDspYyNiiEUE5uNyyP1Mdykmyo2');
-insert into user(id, nom, prenom, email, password) values(2, 'Boussat', 'Melanie', 'melanie.boussat@gmail.com', '$2a$10$l59QxhDRG.2ExXNgCBOM7OkAdsjDspYyNiiEUE5uNyyP1Mdykmyo2');
+insert into user(id, nom, prenom, email, password) values(1, 'Marchive', 'Cyril', 'cyril.marchive@gmail.com', '{bcrypt}$2a$10$F/kEGUBGtokJwiIWjTmtg.JLdeFqiftMeJ/MpmDkRU3Rt.NrWwlSq');
+insert into user(id, nom, prenom, email, password) values(2, 'Boussat', 'Melanie', 'melanie.boussat@gmail.com', '{bcrypt}$2a$10$F/kEGUBGtokJwiIWjTmtg.JLdeFqiftMeJ/MpmDkRU3Rt.NrWwlSq');
 
 insert into type_operation(id, value_type) values(1, 'CREDIT');
 insert into type_operation(id, value_type) values(2, 'DEBIT');

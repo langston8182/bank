@@ -45,7 +45,7 @@
 						<span th:text="#{header.bonjour}">Bonjour </span> <b sec:authentication="name">Guest</b> |
 						<a th:href="@{/logout}" th:text="#{header.deconnexion}" style="padding-right: 20px;">logout</a> <a th:href="@{?lang=fr}">fr</a> / <a th:href="@{?lang=en}">en</a>
 					</p>
-					<a sec:authorize="!isAuthenticated()" th:href="@{/login}" th:text="#{header.connexion}" style="padding-right: 20px;">Login</a> 
+					<a sec:authorize="!isAuthenticated()" th:href="@{/securedPage}" th:text="#{header.connexion}" style="padding-right: 20px;">Login</a>
 					<span sec:authorize="!isAuthenticated()"><a th:href="@{?lang=fr}">fr</a> / <a th:href="@{?lang=en}">en</a></span>
 				</div>
 			</div>

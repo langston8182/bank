@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.cmarchive.bank.component.MyUserDetails;
 import com.cmarchive.bank.domain.User;
 import com.cmarchive.bank.exceptions.UserNotFoundException;
 import com.cmarchive.bank.repository.UserRepository;
@@ -70,9 +69,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             throw new UsernameNotFoundException(username);
         }
         
-        return new MyUserDetails(user);
+        return user;
     }
-    
+
     @Override
     public void encodePassword(User user) {
         String password = new BCryptPasswordEncoder().encode(user.getPassword());
