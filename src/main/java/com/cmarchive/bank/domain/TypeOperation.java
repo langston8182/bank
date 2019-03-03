@@ -24,8 +24,9 @@ public class TypeOperation {
 		return valueType;
 	}
 
-	public void setValue(String value) {
+	public TypeOperation setValue(String value) {
 		this.valueType = value;
+		return this;
 	}
 	
 }

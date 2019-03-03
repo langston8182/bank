@@ -1,32 +1,22 @@
 package com.cmarchive.bank.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-@Data
 @Entity
 @EqualsAndHashCode(of = {"id"})
 public class User implements UserDetails {
@@ -42,7 +32,9 @@ public class User implements UserDetails {
 	private String prenom;
 	
 	private String email;
-	
+
+	@NotNull
+    @NotEmpty
 	private String password;
 	
 	@OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
@@ -67,64 +59,72 @@ public class User implements UserDetails {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public User setId(Long id) {
 		this.id = id;
+        return this;
 	}
 
 	public String getNom() {
 		return nom;
 	}
 
-	public void setNom(String nom) {
+	public User setNom(String nom) {
 		this.nom = nom;
+        return this;
 	}
 
 	public String getPrenom() {
 		return prenom;
 	}
 
-	public void setPrenom(String prenom) {
+	public User setPrenom(String prenom) {
 		this.prenom = prenom;
+        return this;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public User setEmail(String email) {
 		this.email = email;
+        return this;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public User setPassword(String password) {
 		this.password = password;
+        return this;
 	}
 
 	public List<Operation> getOperations() {
 		return operations;
 	}
 
-	public void setOperations(List<Operation> operations) {
+	public User setOperations(List<Operation> operations) {
 		this.operations = operations;
+        return this;
 	}
 
 	public List<PermanentOperation> getPermanentsOperation() {
 		return permanentsOperation;
 	}
 
-	public void setPermanentsOperation(List<PermanentOperation> permanentsOperation) {
+	public User setPermanentsOperation(List<PermanentOperation> permanentsOperation) {
 		this.permanentsOperation = permanentsOperation;
+        return this;
 	}
 
 	public List<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public User setRoles(List<Role> roles) {
 		this.roles = roles;
+        return this;
 	}
 
 	@Override

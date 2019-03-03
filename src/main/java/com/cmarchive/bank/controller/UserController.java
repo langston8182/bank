@@ -44,7 +44,7 @@ public class UserController {
 		return "users/view";
 	}
 
-	@RequestMapping("/modifier")
+	@RequestMapping(value = "/modifier", method = RequestMethod.PUT)
 	public String modifier(@Valid User user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "users/list";

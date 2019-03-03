@@ -22,15 +22,13 @@ public class HomeController {
 		return "index";
 	}
 
-	/*@RequestMapping("/login")
+	@RequestMapping("/login")
 	public String login() {
 		return "login";
-	}*/
+	}
 
 	@RequestMapping("securedPage")
 	public String securedPage(Model model, OAuth2Authentication auth, Principal principal) {
-        UserDetails user = (UserDetails) auth.getUserAuthentication().getDetails();
-        //model.addAttribute("prenom", user.getPrenom());
-	    return "securedPage";
+        return "securedPage";
 	}
 }

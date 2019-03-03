@@ -15,7 +15,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Data
 @Entity
 @EqualsAndHashCode(of = {"id"})
 public class PermanentOperation {
@@ -48,55 +47,62 @@ public class PermanentOperation {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public PermanentOperation setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getIntitule() {
 		return intitule;
 	}
 
-	public void setIntitule(String intitule) {
+	public PermanentOperation setIntitule(String intitule) {
 		this.intitule = intitule;
+        return this;
 	}
 
 	public int getJour() {
 		return jour;
 	}
 
-	public void setJour(int jour) {
+	public PermanentOperation setJour(int jour) {
 		this.jour = jour;
+        return this;
 	}
 
 	public float getPrix() {
 		return prix;
 	}
 
-	public void setPrix(float prix) {
+	public PermanentOperation setPrix(float prix) {
 		this.prix = prix;
+        return this;
 	}
 
 	public TypeOperation getTypeOperation() {
 		return typeOperation;
 	}
 
-	public void setTypeOperation(TypeOperation typeOperation) {
+	public PermanentOperation setTypeOperation(TypeOperation typeOperation) {
 		this.typeOperation = typeOperation;
+        return this;
 	}
 
 	public User getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public PermanentOperation setUser(User user) {
 		this.user = user;
+        return this;
 	}
 
 	public List<Operation> getOperations() {
 		return operations;
 	}
 
-	public void setOperations(List<Operation> operations) {
+	public PermanentOperation setOperations(List<Operation> operations) {
 		this.operations = operations;
+        return this;
 	}
 }

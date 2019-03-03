@@ -45,7 +45,7 @@ public class PermanentOperationServiceImpl implements PermanentOperationService 
     @Override
     public void delete(Long id) {
         PermanentOperation permanentOperation = get(id);
-        permanentOperation.getOperations().stream()
+        permanentOperation.getOperations()
             .forEach(o -> o.setPermanentOperation(null));
         
         permanentOperationRepository.delete(id);

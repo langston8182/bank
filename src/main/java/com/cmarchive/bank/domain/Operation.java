@@ -53,55 +53,62 @@ public class Operation {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public Operation setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getIntitule() {
 		return intitule;
 	}
 
-	public void setIntitule(String intitule) {
+	public Operation setIntitule(String intitule) {
 		this.intitule = intitule;
+        return this;
 	}
 
 	public LocalDate getDateOperation() {
 		return dateOperation;
 	}
 
-	public void setDateOperation(LocalDate dateOperation) {
+	public Operation setDateOperation(LocalDate dateOperation) {
 		this.dateOperation = dateOperation;
+        return this;
 	}
 
 	public float getPrix() {
 		return prix;
 	}
 
-	public void setPrix(float prix) {
+	public Operation setPrix(float prix) {
 		this.prix = prix;
+        return this;
 	}
 
 	public TypeOperation getTypeOperation() {
 		return typeOperation;
 	}
 
-	public void setTypeOperation(TypeOperation typeOperation) {
+	public Operation setTypeOperation(TypeOperation typeOperation) {
 		this.typeOperation = typeOperation;
+        return this;
 	}
 
 	public User getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public Operation setUser(User user) {
 		this.user = user;
+        return this;
 	}
 
 	public PermanentOperation getPermanentOperation() {
 		return permanentOperation;
 	}
 
-	public void setPermanentOperation(PermanentOperation permanentOperation) {
+	public Operation setPermanentOperation(PermanentOperation permanentOperation) {
 		this.permanentOperation = permanentOperation;
+        return this;
 	}
 }
