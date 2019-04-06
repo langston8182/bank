@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,7 @@ public class UserController {
 		this.userService = userService;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("users", userService.list());
@@ -42,7 +44,7 @@ public class UserController {
 		return "users/view";
 	}
 
-	@RequestMapping("/modifier")
+	@RequestMapping(value = "/modifier", method = RequestMethod.PUT)
 	public String modifier(@Valid User user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "users/list";

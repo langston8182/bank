@@ -1,0 +1,37 @@
+server:
+  port: 8100
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      grantType: authorization_code
+      clientId: client
+      clientSecret: password
+      accessTokenUri: http://localhost:8090/auth/oauth/token
+      userAuthorizationUri: http://localhost:8090/auth/oauth/authorize
+    resource:
+      userInfoUri: http://localhost:8090/auth/user/me
+spring:
+  thymeleaf:
+    cache: false
+  mvc:
+    locale-resolver: fixed
+    locale: en
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  datasource:
+    host: localhost
+    port: 3306
+    url: jdbc:mariadb://${spring.datasource.host}:${spring.datasource.port}/bank
+    username: spring
+    password: spring
+    driver-class-name: org.mariadb.jdbc.Driver
+    validationQuery: SELECT 1
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
